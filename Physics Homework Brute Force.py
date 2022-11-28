@@ -28,7 +28,7 @@ yes.send_keys(Keys.ENTER)
 
 
 
-
+#maybe this registers the changes and I just need to delete the other files?
 
 handles = driver.window_handles
 driver.switch_to.window(handles[1])
