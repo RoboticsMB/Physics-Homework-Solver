@@ -1,8 +1,49 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium import webdriver
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Nov  7 18:25:28 2022
 
-# Assuming driver is already instantiated somewhere before
+@author: Matthew
+"""
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+import tkinter as tk
+from tkinter import simpledialog
+
+
+
+
+
+urlquestion = tk.Tk()
+urlquestion.geometry("200x100")
+theurl = simpledialog.askstring("Input","Please go into the quiz and copy paste the URL in here :)",parent=urlquestion)
+urlquestion.destroy()
+
+
+usernamequestion = tk.Tk()
+usernamequestion.geometry("200x100")
+theusername = simpledialog.askstring("Input","Username Please :)",parent=usernamequestion)
+usernamequestion.destroy()
+
+
+
+
+
+passwordquestion = tk.Tk()
+passwordquestion.geometry("200x100")
+thepassword = simpledialog.askstring("Input","Password Please :)",parent=passwordquestion)
+passwordquestion.destroy()
+
+service = Service(ChromeDriverManager().install())
+driver = webdriver.Chrome(service=service)
+
+
+driver.get(theurl)
 
 # Locate elements and perform actions
 username = driver.find_element(By.NAME, "username")
