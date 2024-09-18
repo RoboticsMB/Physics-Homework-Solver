@@ -72,13 +72,17 @@ while ProblemNum <= 20:
     decimalsCoveredFlag = False
 
     while (str(isCorrect.text) == "Incorrect" or str(isCorrect.text) == "Not complete"):
-        answerbox = driver.find_element(By.XPATH,"//input[@type='text']")
+        answerbox = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,"//input[@type='text']")))
+        #answerbox = driver.find_element(By.XPATH,"//input[@type='text']")
         answerbox.clear()
         answerbox.send_keys(str(currentNum))
-        checkbutton = driver.find_element(By.XPATH, "//button[@type='submit']")
+        checkbutton = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,"//button[@type='submit']")))
+        #checkbutton = driver.find_element(By.XPATH, "//button[@type='submit']")
         checkbutton.click()
 
-        isCorrect = driver.find_element(By.CLASS_NAME, "state")
+
+        isCorrect = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME,"state")))
+        #isCorrect = driver.find_element(By.CLASS_NAME, "state")
 
         if currentNum < 100 and currentNum >= 10 and onesCoveredFlag == False:
             currentNum += 0.1
