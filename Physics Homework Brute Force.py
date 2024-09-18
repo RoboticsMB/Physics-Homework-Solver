@@ -11,12 +11,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import time
 
 import tkinter as tk
 from tkinter import simpledialog
-
-
-
 
 
 urlquestion = tk.Tk()
@@ -32,8 +30,6 @@ usernamequestion.destroy()
 
 
 
-
-
 passwordquestion = tk.Tk()
 passwordquestion.geometry("200x100")
 thepassword = simpledialog.askstring("Input","Password Please :)",parent=passwordquestion)
@@ -45,31 +41,26 @@ driver = webdriver.Chrome(service=service)
 
 driver.get(theurl)
 
+#driver.get("https://moodle.gatewayk12.org/2425/mod/quiz/attempt.php?attempt=799&cmid=2090&page=0")
+
+time.sleep(2)
+
 # Locate elements and perform actions
-username = driver.find_element(By.NAME, "username")
+username = driver.find_element(By.XPATH,  "//input[@name='username']")
+
 username.send_keys(theusername)
 
-password = driver.find_element(By.NAME, "password")
+password = driver.find_element(By.XPATH,  "//input[@name='password']")
 password.send_keys(thepassword)
 
-signInButton = driver.find_element(By.NAME, "signin")
-signInButton.click()
+logInButton = driver.find_element(By.XPATH, "//button[@id='loginbtn']")
+logInButton.click()
 
 driver.implicitly_wait(3)
 
-yes = driver.find_element(By.XPATH, "/html/body/app-root/secure/div/app-header/div/div[3]/div/cl-input/div/input")
-yes.send_keys("Moodle")
-yes.send_keys(Keys.ENTER)
-
-# Switch to the new window/tab
-handles = driver.window_handles
-driver.switch_to.window(handles[1])
 
 ProblemNum = 1
 
-# Locate the question attempt total
-questionAttemptTotal = driver.find_element(By.XPATH, '/html/body/div[3]/div[5]/div/div[2]/div/section/div[2]/form/div/div[1]')
-questionAttemptPart = questionAttemptTotal.get_attribute("id")[9:13]
 
 while ProblemNum <= 20:
     isCorrect = driver.find_element(By.CLASS_NAME, "state")
@@ -80,15 +71,11 @@ while ProblemNum <= 20:
     onesCoveredFlag = False
     decimalsCoveredFlag = False
 
-    # Generate dynamic IDs
-    answerboxID = "q" + questionAttemptPart + ":" + str(ProblemNum) + "_answer"
-    checkButtonID = "q" + questionAttemptPart + ":" + str(ProblemNum) + "_-submit"
-
     while (str(isCorrect.text) == "Incorrect" or str(isCorrect.text) == "Not complete"):
-        answerbox = driver.find_element(By.ID, answerboxID)
+        answerbox = driver.find_element(By.XPATH,"//input[@type='text']")
         answerbox.clear()
         answerbox.send_keys(str(currentNum))
-        checkbutton = driver.find_element(By.ID, checkButtonID)
+        checkbutton = driver.find_element(By.XPATH, "//button[@type='submit']")
         checkbutton.click()
 
         isCorrect = driver.find_element(By.CLASS_NAME, "state")
@@ -137,3 +124,6 @@ while ProblemNum <= 20:
     NextButton.click()
 
     driver.implicitly_wait(3)
+
+
+driver.quit()
